@@ -12,3 +12,7 @@ This SQL project demonstrates my skills in data management and analysis using Po
 - **shipping**: Shipment_ID, Order_ID, Shipping_Company, Tracking_Number, Shipment_Date, Expected_Delivery_Date, Actual_Delivery_Date, Shipping_Address, Shipping_Cost, Delay_Charge, Reason_for_the_delay
 - **return**: Return_ID, Order_ID, Return_Date, Return_Reason, Return_Shipping_Cost, Return_Items, Return_quantity, Refund_Amount, Refund_Date
 - **payments**: Payment_ID, Order_ID, Customer_ID, Paid_Amount, Payment_Date
+
+### Dataset Creation
+The initial phase of this project involved creating the databases(sales) and tables within PostgreSQL.
+
