@@ -151,6 +151,70 @@ select Year,quarter,
     order by Year,Quarter
 ```
 
+3.*What are the costs associated with sales transactions?*
+
+![Screenshot_6](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/1387ced0-2aa0-443e-8e56-b894fdbc84c9)
+
+>**???**
+
+```sql
+with costs as(
+select extract(year from o.order_date) as year,
+       sum(s.shipping_cost) as total_shipping_cost,
+       sum(s.delay_charge) as total_delay_chargers,
+       sum(r.refund_amount) as total_refund_cost,
+       sum(r.return_shipping_cost) as total_return_cost,
+       sum(o.total-coalesce(p.paid_amount,0)) as bad_debts
+ from orders o 
+  left join shipping s on o.order_id=s.order_id
+  left join return r on o.order_id=r.order_id
+  left join payments p on o.order_id=p.order_id
+ group by extract(year from o.order_date))
+ select  year,
+        total_shipping_cost,total_delay_chargers,total_refund_cost,
+        total_return_cost,bad_debts,
+       sum(total_shipping_cost+total_delay_chargers+total_refund_cost+total_return_cost+bad_debts) as total_cost
+       from costs
+ group by total_shipping_cost,total_delay_chargers,total_refund_cost,total_return_cost,bad_debts,year
+order by Year
+```
+
+4. *costs as percentages of gross revenue*
+
+![Screenshot_7](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/4aa3a142-6c23-4cae-8af7-0b1a54dec3a8)
+
+>**??**
+
+```sql
+
+5. *How much delay cost could have been saved?*
+
+![Screenshot_16](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/6fe4ae5d-f246-425d-acc9-768b6142655e)
+
+> **???** 
+
+```sql
+select 
+    Reason_for_the_delay,
+    count(*) as delay_count,
+    ROUND((count(*)::decimal / total_transactions.total_count) * 100, 2) as delay_percentage_of_totaltransactions,
+    sum(Delay_Charge) as total_delay_cost,
+    ROUND((sum(Delay_Charge) / total_delay_costs.total_cost) * 100, 2) as delay_cost_percentage
+from 
+    shipping,
+    (select count(*) as total_count from shipping) as total_transactions,
+    (select sum(Delay_Charge) as total_cost from shipping where Actual_Delivery_Date > Expected_Delivery_Date) as total_delay_costs
+where 
+    actual_Delivery_Date > expected_Delivery_Date
+GROUP BY 
+    reason_for_the_delay, total_transactions.total_count, total_delay_costs.total_cost;
+```
+
+
+
+
+
+
 
 
 
