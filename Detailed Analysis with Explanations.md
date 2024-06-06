@@ -121,6 +121,38 @@ select extract(year from order_date) as Year,
       group by extract(year from order_date)
 ```
 
+2. *Can the order value be considered as the total revenue the company earned?*
+
+![Screenshot_5](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/090735f7-5e8f-42b6-847f-2f5e60e6d962)
+
+>**>I tried to fetch data related to sales transactions on a yearly and quarterly basis. Gross sales amount cannot be considered as revenue earned by the company, as each sales transaction includes expenses. Therefore, it is necessary to deduct these expenses to determine the exact amount that the company actually earned**
+
+```sql
+with Quarterly_Revenue as(
+select extract(year from o.order_date) as Year,
+       extract(quarter from o.order_date) as quarter,
+       sum(o.total) as gross_Quarterly_revenue,
+       sum(o.total-(o.total-coalesce(p.paid_amount,0))-coalesce(s.shipping_cost,0)
+       -coalesce(s.delay_charge,0)-coalesce(r.refund_amount,0)-coalesce(r.return_shipping_cost,0)) 
+       as Quarterly_Net_Revenue
+ from orders o 
+ left join shipping s on o.order_id=s.order_id
+ left join return r on o.order_id=r.order_id
+ left join payments p on o.order_id=p.order_id
+group by extract(year from o.order_date),
+         extract(quarter from o.order_date)
+order by extract(year from o.Order_Date), extract(quarter from o.Order_Date))
+select Year,quarter,
+       gross_Quarterly_revenue,
+       Quarterly_Net_Revenue,
+      sum(gross_Quarterly_revenue) over(partition by Year) as Yearly_Gross_sales,
+      sum(Quarterly_Net_Revenue) over(partition by Year) as Yearly_Net_sales
+    from Quarterly_Revenue
+    order by Year,Quarter
+```
+
+
+
 
 
  
