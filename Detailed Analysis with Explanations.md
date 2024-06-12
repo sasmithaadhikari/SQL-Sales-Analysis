@@ -137,7 +137,7 @@ select extract(year from order_date) as Year,
 
 ![Screenshot_5](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/090735f7-5e8f-42b6-847f-2f5e60e6d962)
 
->**>I tried to fetch data related to sales transactions on a yearly and quarterly basis. Gross sales amount cannot be considered as revenue earned by the company, as each sales transaction includes expenses. Therefore, it is necessary to deduct these expenses to determine the exact amount that the company actually earned**
+>**I tried to fetch data related to sales transactions on a yearly and quarterly basis. Gross sales amount cannot be considered as revenue earned by the company, as each sales transaction includes expenses. Therefore, it is necessary to deduct these expenses to determine the exact amount that the company actually earned**
 
 ```sql
 with Quarterly_Revenue as(
@@ -197,7 +197,6 @@ order by Year
 
 >**??**
 
-```sql
 
 5. *How much delay cost could have been saved?*
 
@@ -206,6 +205,7 @@ order by Year
 > **???** 
 
 ```sql
+ 
 select 
     Reason_for_the_delay,
     count(*) as delay_count,
