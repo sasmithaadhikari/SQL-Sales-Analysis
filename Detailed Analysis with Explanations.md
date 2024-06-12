@@ -8,10 +8,6 @@ This SQL project demonstrates my skills in data management and analysis using Po
 ## How this Analysis is documented
 In this analysis, I will begin by attaching a screenshot of the result where I executed the SQL query and obtained the results. Following that, I will provide a brief explanation based on the screenshot. Finally, I will include the query used to fetch the data within the PostgreSQL database.
 
-## Problem Statements
-
-
-
 ### TOOLS USED
 - EXCEL
 - POSTGRE SQL DATABASE
@@ -115,6 +111,7 @@ create table payments(
 
 >**Since there is a 25 MB size limitation for uploading files to GitHub, I separately saved all the CSV files in another location for referencing purposes**
 >**You can access them using the following link.**
+   https://drive.google.com/drive/folders/1-xvoYzFegiQw6tMh6Okhq14CEDOCSdzq?usp=sharing
   
 ## Analyzing Phase
 
@@ -221,41 +218,17 @@ with percentages as(
    group by year,gross_revenue,baddebts_percentage,delaycost_percentage,returncost_percentage
 ```
 
-
-5. *How much delay cost could have been saved?*
-
-![Screenshot_16](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/6fe4ae5d-f246-425d-acc9-768b6142655e)
-
-> **???** 
-
-```sql
- 
-select 
-    Reason_for_the_delay,
-    count(*) as delay_count,
-    ROUND((count(*)::decimal / total_transactions.total_count) * 100, 2) as delay_percentage_of_totaltransactions,
-    sum(Delay_Charge) as total_delay_cost,
-    ROUND((sum(Delay_Charge) / total_delay_costs.total_cost) * 100, 2) as delay_cost_percentage
-from 
-    shipping,
-    (select count(*) as total_count from shipping) as total_transactions,
-    (select sum(Delay_Charge) as total_cost from shipping where Actual_Delivery_Date > Expected_Delivery_Date) as total_delay_costs
-where 
-    actual_Delivery_Date > expected_Delivery_Date
-GROUP BY 
-    reason_for_the_delay, total_transactions.total_count, total_delay_costs.total_cost;
-```
-
-6. *How much does the company have to incur annually to offer discounts only to eligible customers?*
+5. *How much does the company have to incur annually to offer discounts only to eligible customers?*
 
 ![Screenshot_5](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/f3841a7b-b8ee-465f-a0fb-810bcd34fe42)
 
->**company had implemented a discount policy as incentive only for  loyal customers who satisfied following criterias 
-      -No Returns: The customer must not have any returns associated with their orders.
-      -Total Equals Paid Amount: The total amount of the order must be equal to the paid amount.
-      -Total Order Value Threshold: The total value of the order must be greater than or equal to 500.
-      -Order Count: The customer must have ordered at least five times within the same year.
-      -Early Payment: Customers who pay early are eligible for discounts.**          
+>**This table shows the annual cost of additional discounts the company offers to loyal customers who meet the following criteria**
+>- No Returns: The customer must not have any returns associated with their orders
+>- Total Equals Paid Amount: The total amount of the order must be equal to the paid amount
+>- Total Order Value Threshold: The total value of the order must be greater than or equal to 500
+>- Order Count: The customer must have ordered at least five times within the same year
+>- Early Payment: Customers who pay early are eligible for discounts
+  
 
 ``` sql
 
@@ -303,11 +276,11 @@ select o.order_date,o.order_id,o.customer_id,
 
 ```
 
-7.*dsflkdnlkndlnlkfdnvlkn*
+6.*How many transactions have been delayed each year, and what is the average delay in days?*
 
 ![Screenshot_6](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/fda5c061-bf29-42f0-99c8-af6acad2aab8)
 
->**???**
+>**This table displays the count and percentage of transactions that have been delayed, along with the average delay in days. The company has ensured that the average delay does not exceed 5 days over the past 11 years. However, the percentage of delayed transactions relative to total transactions has varied between 24% and 25%. This indicates that approximately one-fourth of all transactions experience delays. It is crucial for the company to take necessary actions to reduce these delays, thereby saving costs associated with delayed transactions**
 
 ```sql
 
@@ -326,7 +299,29 @@ group by
 
 ```
 
-  
+7. *How much delay cost could have been saved?*
+
+![Screenshot_16](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/6fe4ae5d-f246-425d-acc9-768b6142655e)
+
+> **This table represents the reasons for delayed shipments over the past 11 years, along with the corresponding costs for each delay reason. Each of these four reasons has equally contributed to the delays.If the company properly identified and addressed those issues, the company could have saved approximately $29 million**
+
+```sql
+ 
+select 
+    Reason_for_the_delay,
+    count(*) as delay_count,
+    ROUND((count(*)::decimal / total_transactions.total_count) * 100, 2) as delay_percentage_of_totaltransactions,
+    sum(Delay_Charge) as total_delay_cost,
+    ROUND((sum(Delay_Charge) / total_delay_costs.total_cost) * 100, 2) as delay_cost_percentage
+from 
+    shipping,
+    (select count(*) as total_count from shipping) as total_transactions,
+    (select sum(Delay_Charge) as total_cost from shipping where Actual_Delivery_Date > Expected_Delivery_Date) as total_delay_costs
+where 
+    actual_Delivery_Date > expected_Delivery_Date
+GROUP BY 
+    reason_for_the_delay, total_transactions.total_count, total_delay_costs.total_cost;
+```  
 
 
 
