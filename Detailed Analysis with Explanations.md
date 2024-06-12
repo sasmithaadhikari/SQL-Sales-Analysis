@@ -1,4 +1,7 @@
-# SQL-Sales Analysis
+# SQL- PC Sales Analysis 
+ 
+
+![Screenshot_9](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/30f255e9-8a11-4a37-a629-5724eb17a4a8)
 
 
 ## Introduction
