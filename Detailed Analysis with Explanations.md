@@ -4,6 +4,18 @@
 ## Introduction
 ### Project Overview
 This SQL project demonstrates my skills in data management and analysis using PostgreSQL. It involves creating and managing several relational tables like orders, customers, products, branches, shipping, returns, and payments. These tables cover transactional data, customer details, product information, logistics, and financial transactions within a business setting. The dataset includes over one million transactions from 15,000+ customers over an 11-year period from 2009 to 2019, providing a solid foundation for detailed analysis and insights.
+
+## How this Analysis is documented
+In this analysis, I will begin by attaching a screenshot of the result where I executed the SQL query and obtained the results. Following that, I will provide a brief explanation based on the screenshot. Finally, I will include the query used to fetch the data within the PostgreSQL database.
+
+## Problem Statements
+
+
+
+### TOOLS USED
+- EXCEL
+- POSTGRE SQL DATABASE
+
 ### Table of Contents
 - **orders**: Order_ID, Customer_ID, Order_Date, Branch_ID, Product_ID, Price, Quantity, Total, Shipping_Address
 - **customers**: Customer_ID, Country, City, Address, Company_name, Contact_Person, Contact_Numbers, email, Payment_Method
