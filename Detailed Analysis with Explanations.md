@@ -114,7 +114,6 @@ create table payments(
 
 >**Since there is a 25 MB size limitation for uploading files to GitHub, I separately saved all the CSV files in another location for referencing purposes**
 >**You can access them using the following link.**
-   https://drive.google.com/drive/folders/1-xvoYzFegiQw6tMh6Okhq14CEDOCSdzq?usp=sharing
   
 ## Analyzing Phase
 
