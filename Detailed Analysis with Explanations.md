@@ -222,6 +222,67 @@ GROUP BY
     reason_for_the_delay, total_transactions.total_count, total_delay_costs.total_cost;
 ```
 
+6. *How much does the company have to incur annually to offer discounts only to eligible customers?*
+
+![Screenshot_5](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/f3841a7b-b8ee-465f-a0fb-810bcd34fe42)
+
+>**?**
+
+``` sql
+
+with only_three_conditions_satisfied as(
+select o.order_date,o.order_id,o.customer_id,
+       count(o.Order_ID) over (partition by o.Customer_ID, extract(year from o.Order_Date)) as order_count,
+       o.total,
+       p.payment_date-coalesce(s.actual_delivery_date) as days_taken_to_pay,
+       r.refund_amount,p.paid_amount
+    from orders o
+  left join shipping s on o.order_id=s.order_id
+  left join return r on o.order_id=r.order_id
+  left join payments p on o.order_id=p.order_id
+  where r.order_id is null
+   and  o.total=p.paid_amount
+   and  o.total>=500  
+  order by order_date,order_id), 
+  
+  all_conditions_satisfied as(
+  select * from only_three_conditions_satisfied
+  group by order_date,order_id,customer_id,days_taken_to_pay,order_count,
+         total,refund_amount,paid_amount
+  having(order_count)>=5),
+
+   customers_who_paid_early as(
+   select all_conditions_satisfied.*,
+   case 
+        when days_taken_to_pay < 30 then Paid_Amount * 0.03
+        when days_taken_to_pay between 30 and 45 then Paid_Amount * 0.02
+        when days_taken_to_pay between 46 and 60 then Paid_Amount * 0.005
+        else 0
+      end as discount
+   from all_conditions_satisfied),
+
+  final_eligible_customers as(
+  select * from customers_who_paid_early
+  where discount>0)
+  
+   select extract(year from order_date) as Year,
+       count(customer_id) as total_eligible_customers,
+       round(sum(discount)) as total_discount_cost
+     from final_eligible_customers
+   group by extract(year from order_date)
+   order by extract(year from order_date) asc
+
+```
+  
+
+
+
+
+
+
+
+
+
 
 
 
