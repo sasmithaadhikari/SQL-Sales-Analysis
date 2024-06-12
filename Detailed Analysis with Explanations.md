@@ -122,7 +122,7 @@ create table payments(
 
 ![Screenshot_3](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/829f65a1-230f-4a47-b586-750ecd89e0b7)
 
->**????**
+>**This table shows the number of transactions each year from 2009 to 2019. It also includes the number of transactions for the next year and ranks each year by the total number of transactions. The transactions generally increased over the years, with 2019 having the highest number of transactions (115,868) and 2009 having the lowest (66,971). The rank column indicates that 2019 was the top year for transactions, while 2009 had the least. This analysis helps us see how transaction volumes changed over the years and which years were the most active in sales.**
 
 ``` sql
 select extract(year from order_date) as Year,
@@ -167,7 +167,7 @@ select Year,quarter,
 
 ![Screenshot_6](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/1387ced0-2aa0-443e-8e56-b894fdbc84c9)
 
->**???**
+>**in here i tried fetch the cost related data as year yearly basis.so This table shows how costs changed from 2009 to 2019. Shipping costs went up each year, starting at around 18.7 million in 2009 and reaching about 32.8 million by 2019. Delay charges also increased, starting around 1.9 million in 2009 and reaching about 3.3 million in 2019. Refund costs went up and down but generally rose, starting at about 14.2 million in 2009 and peaking at about 25.1 million in 2019. Return costs varied each year, going from about 1.0 million in 2009 to about 1.9 million in 2019. Bad debts increased a lot, from about 2.5 million in 2009 to around 4.3 million in 2019. All these costs went up because the company sold more. But costs like delay charges, refund costs, and bad debts are things the company could have controlled better**
 
 ```sql
 with costs as(
@@ -195,7 +195,7 @@ order by Year
 
 ![Screenshot_7](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/4aa3a142-6c23-4cae-8af7-0b1a54dec3a8)
 
->**??**
+>**These are the costs a company can control by taking necessary steps beforehand. As we can see, the company has been able to keep these costs steady despite increasing sales over the past 11 years. However, these costs could've been avoided if the company had taken proper actions, like being stricter with credit to avoid unpaid bills, making sure the products meet quality standards to reduce returns, and setting up better systems to avoid delays**
 
 ```sql
 with percentages as(
@@ -250,7 +250,12 @@ GROUP BY
 
 ![Screenshot_5](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/f3841a7b-b8ee-465f-a0fb-810bcd34fe42)
 
->**?**
+>**company had implemented a discount policy as incentive only for  loyal customers who satisfied following criterias 
+      -No Returns: The customer must not have any returns associated with their orders.
+      -Total Equals Paid Amount: The total amount of the order must be equal to the paid amount.
+      -Total Order Value Threshold: The total value of the order must be greater than or equal to 500.
+      -Order Count: The customer must have ordered at least five times within the same year.
+      -Early Payment: Customers who pay early are eligible for discounts.**          
 
 ``` sql
 
