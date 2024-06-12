@@ -197,6 +197,30 @@ order by Year
 
 >**??**
 
+```sql
+with percentages as(
+      select extract(year from o.order_date) as year,
+       SUM(o.total) AS gross_revenue,
+       round(sum(o.total-coalesce(p.paid_amount))/sum(o.total)*100,2) as baddebts_percentage,
+       round(SUM(s.delay_charge) / SUM(o.total) * 100, 2) as delaycost_percentage,
+       round(sum(r.refund_amount) / sum(o.total) * 100, 2) as returncost_percentage
+       from orders o
+   left join shipping s ON o.order_id = s.order_id
+   left join return r on o.order_id=r.order_id
+   left join payments p on o.order_id=p.order_id
+   group by  
+   extract(year from o.order_date))
+ select 
+         percentages.Year,
+         percentages.gross_revenue,
+        baddebts_percentage,
+        delaycost_percentage,
+        returncost_percentage,
+       sum(baddebts_percentage+delaycost_percentage+returncost_percentage) as totalcost_percentage
+   from percentages
+   group by year,gross_revenue,baddebts_percentage,delaycost_percentage,returncost_percentage
+```
+
 
 5. *How much delay cost could have been saved?*
 
@@ -273,6 +297,30 @@ select o.order_date,o.order_id,o.customer_id,
    order by extract(year from order_date) asc
 
 ```
+
+7.*dsflkdnlkndlnlkfdnvlkn*
+
+![Screenshot_6](https://github.com/sasmithaadhikari/SQL-Sales-Analysis/assets/165268051/fda5c061-bf29-42f0-99c8-af6acad2aab8)
+
+>**???**
+
+```sql
+
+select 
+    extract(year from o.order_date) as year,
+    count(*) as Total_Shipments,
+    sum(case when s.actual_delivery_date > s.expected_delivery_date then 1 else 0 end) AS Delayed_Shipments,
+    round(avg(s.actual_delivery_date - s.expected_delivery_date), 3) as Avg_Delay_Days,
+    ROUND((sum(case when s.actual_delivery_date > s.expected_delivery_date then 1 else 0 end) * 100.0) / count(*), 2) AS Delayed_Shipments_Percentage
+from 
+    orders o
+join 
+    shipping s on o.order_id = s.order_id 
+group by 
+    extract(year from o.order_date)
+
+```
+
   
 
 
